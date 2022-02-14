@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 /**
  * @Description: zm_supplier
  * @Author: jeecg-boot
- * @Date:   2021-12-12
+ * @Date:   2021-12-13
  * @Version: V1.0
  */
 public interface ZmSupplierMapper extends BaseMapper<ZmSupplier> {

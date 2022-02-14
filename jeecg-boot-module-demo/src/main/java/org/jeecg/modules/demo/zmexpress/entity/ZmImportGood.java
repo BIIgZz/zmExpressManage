@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.jeecgframework.poi.excel.annotation.Excel;
 import java.util.Date;
+import org.jeecg.common.aspect.annotation.Dict;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.UnsupportedEncodingException;
@@ -16,7 +17,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * @Description: 货柜详情
  * @Author: jeecg-boot
- * @Date:   2021-12-13
+ * @Date:   2021-12-22
  * @Version: V1.0
  */
 @ApiModel(value="zm_import_good对象", description="货柜详情")
@@ -105,6 +106,7 @@ public class ZmImportGood implements Serializable {
     private java.lang.String brand;
 	/**品牌类型*/
 	@Excel(name = "品牌类型", width = 15, dicCode = "type")
+	@Dict(dicCode = "type")
     @ApiModelProperty(value = "品牌类型")
     private java.lang.String type;
 	/**产品型号*/

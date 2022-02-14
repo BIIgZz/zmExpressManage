@@ -79,7 +79,7 @@ public class ZmProduct implements Serializable {
 	/**产品售价*/
 	@Excel(name = "产品售价", width = 15)
     @ApiModelProperty(value = "产品售价")
-    private Double price;
+    private String price;
 	/**图片链接*/
 	@Excel(name = "图片链接", width = 15 , height = 20,imageType = 2,type = 2)
     @ApiModelProperty(value = "图片链接")

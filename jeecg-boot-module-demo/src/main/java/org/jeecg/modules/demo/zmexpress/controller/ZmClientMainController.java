@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.system.base.controller.JeecgController;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.demo.zmexpress.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
@@ -14,10 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.Arrays;
 import org.jeecg.common.util.oConvertUtils;
-import org.jeecg.modules.demo.zmexpress.entity.ZmClientBasic;
-import org.jeecg.modules.demo.zmexpress.entity.ZmClientAddress;
-import org.jeecg.modules.demo.zmexpress.entity.ZmClientFinance;
-import org.jeecg.modules.demo.zmexpress.entity.ZmClientMain;
 import org.jeecg.modules.demo.zmexpress.service.IZmClientMainService;
 import org.jeecg.modules.demo.zmexpress.service.IZmClientBasicService;
 import org.jeecg.modules.demo.zmexpress.service.IZmClientAddressService;
@@ -582,7 +579,40 @@ public class ZmClientMainController extends JeecgController<ZmClientMain, IZmCli
 
     /*--------------------------------子表处理-财务数据-end----------------------------------------------*/
 
-
-
-
+	 /**
+	  * @title
+	  * @description 分类统计
+	  * @author zzh
+	  * @updateTime 2022/2/14 16:37
+	  * @throws
+	  */
+	 @GetMapping("/statisticsByStatus")
+	 public Result<?> statisticsByStatus() {
+		 String[] res  = new String[6];
+		 int count = 0;
+		 QueryWrapper<ZmClientMain> queryWrapper = new QueryWrapper<>();
+		 queryWrapper.eq("status","0");
+		 count = zmClientMainService.count(queryWrapper);
+		 res[0]="待审核("+count+")";
+		 queryWrapper.clear();
+		 queryWrapper.eq("status","1");
+		 count = zmClientMainService.count(queryWrapper);
+		 res[1]="已认证("+count+")";
+		 queryWrapper.clear();
+		 queryWrapper.eq("status","2");
+		 count = zmClientMainService.count(queryWrapper);
+		 res[2]="免认证("+count+")";
+		 queryWrapper.clear();
+		 queryWrapper.eq("status","3");
+		 count = zmClientMainService.count(queryWrapper);
+		 res[3]="待提交认证("+count+")";
+		 queryWrapper.clear();
+		 queryWrapper.eq("status","4");
+		 count = zmClientMainService.count(queryWrapper);
+		 res[4]="已拒绝("+count+")";
+		 queryWrapper.clear();
+		 count = zmClientMainService.count();
+		 res[5]="全部("+count+")";
+		 return  Result.OK(res);
+	 }
 }

@@ -8,9 +8,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * @Description: 导入FBA表
+ * @Description: 导入FBA表(已导出)
  * @Author: jeecg-boot
- * @Date:   2021-07-13
+ * @Date:   2021-12-22
  * @Version: V1.0
  */
 public interface IZmImportFbaService extends IService<ZmImportFba> {
@@ -19,22 +19,22 @@ public interface IZmImportFbaService extends IService<ZmImportFba> {
 	 * 添加一对多
 	 * 
 	 */
-	public void saveMain(ZmImportFba zmImportFba, List<ZmImportGood> zmImportGoodList) ;
+	public void saveMain(ZmImportFba zmImportFba,List<ZmImportGood> zmImportGoodList) ;
 	
 	/**
 	 * 修改一对多
 	 * 
 	 */
-	public void updateMain(ZmImportFba zmImportFba, List<ZmImportGood> zmImportGoodList);
+	public void updateMain(ZmImportFba zmImportFba,List<ZmImportGood> zmImportGoodList);
 	
 	/**
 	 * 删除一对多
 	 */
-	public void delMain(String id);
+	public void delMain (String id);
 	
 	/**
 	 * 批量删除一对多
 	 */
-	public void delBatchMain(Collection<? extends Serializable> idList);
+	public void delBatchMain (Collection<? extends Serializable> idList);
 	
 }

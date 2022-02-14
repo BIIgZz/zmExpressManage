@@ -20,7 +20,7 @@ import lombok.experimental.Accessors;
 /**
  * @Description: zm_supplier
  * @Author: jeecg-boot
- * @Date:   2021-12-12
+ * @Date:   2021-12-13
  * @Version: V1.0
  */
 @Data
@@ -34,54 +34,54 @@ public class ZmSupplier implements Serializable {
 	/**主键*/
 	@TableId(type = IdType.ASSIGN_ID)
     @ApiModelProperty(value = "主键")
-    private String id;
+    private java.lang.String id;
 	/**创建人*/
     @ApiModelProperty(value = "创建人")
-    private String createBy;
+    private java.lang.String createBy;
 	/**创建日期*/
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "创建日期")
-    private Date createTime;
+    private java.util.Date createTime;
 	/**更新人*/
     @ApiModelProperty(value = "更新人")
-    private String updateBy;
+    private java.lang.String updateBy;
 	/**更新日期*/
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "更新日期")
-    private Date updateTime;
+    private java.util.Date updateTime;
 	/**所属部门*/
     @ApiModelProperty(value = "所属部门")
-    private String sysOrgCode;
+    private java.lang.String sysOrgCode;
 	/**备注*/
 	@Excel(name = "备注", width = 15)
     @ApiModelProperty(value = "备注")
-    private String note;
+    private java.lang.String note;
 	/**供应商类型*/
 	@Excel(name = "供应商类型", width = 15, dicCode = "supplier")
 	@Dict(dicCode = "supplier")
     @ApiModelProperty(value = "供应商类型")
-    private String type;
+    private java.lang.String type;
 	/**状态*/
 	@Excel(name = "状态", width = 15, dicCode = "service_status")
 	@Dict(dicCode = "service_status")
     @ApiModelProperty(value = "状态")
-    private String status;
+    private java.lang.String status;
 	/**联系人*/
 	@Excel(name = "联系人", width = 15)
     @ApiModelProperty(value = "联系人")
-    private String linkman;
+    private java.lang.String linkman;
 	/**公司名称(英)*/
 	@Excel(name = "公司名称(英)", width = 15)
     @ApiModelProperty(value = "公司名称(英)")
-    private String companyEn;
+    private java.lang.String companyEn;
 	/**公司名称*/
 	@Excel(name = "公司名称", width = 15)
     @ApiModelProperty(value = "公司名称")
-    private String company;
+    private java.lang.String company;
 	/**联系电话*/
 	@Excel(name = "联系电话", width = 15)
     @ApiModelProperty(value = "联系电话")
-    private String tel;
+    private java.lang.String tel;
 }

@@ -37,12 +37,12 @@ import io.swagger.annotations.ApiOperation;
 import org.jeecg.common.aspect.annotation.AutoLog;
 
  /**
- * @Description: hscode
+ * @Description: hscode(已导出)
  * @Author: jeecg-boot
- * @Date:   2021-07-19
+ * @Date:   2022-01-06
  * @Version: V1.0
  */
-@Api(tags="hscode")
+@Api(tags="hscode(已导出)")
 @RestController
 @RequestMapping("/zmexpress/zmHscode")
 @Slf4j
@@ -59,8 +59,8 @@ public class ZmHscodeController extends JeecgController<ZmHscode, IZmHscodeServi
 	 * @param req
 	 * @return
 	 */
-	@AutoLog(value = "hscode-分页列表查询")
-	@ApiOperation(value="hscode-分页列表查询", notes="hscode-分页列表查询")
+	@AutoLog(value = "hscode(已导出)-分页列表查询")
+	@ApiOperation(value="hscode(已导出)-分页列表查询", notes="hscode(已导出)-分页列表查询")
 	@GetMapping(value = "/list")
 	public Result<?> queryPageList(ZmHscode zmHscode,
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
@@ -78,8 +78,8 @@ public class ZmHscodeController extends JeecgController<ZmHscode, IZmHscodeServi
 	 * @param zmHscode
 	 * @return
 	 */
-	@AutoLog(value = "hscode-添加")
-	@ApiOperation(value="hscode-添加", notes="hscode-添加")
+	@AutoLog(value = "hscode(已导出)-添加")
+	@ApiOperation(value="hscode(已导出)-添加", notes="hscode(已导出)-添加")
 	@PostMapping(value = "/add")
 	public Result<?> add(@RequestBody ZmHscode zmHscode) {
 		zmHscodeService.save(zmHscode);
@@ -92,8 +92,8 @@ public class ZmHscodeController extends JeecgController<ZmHscode, IZmHscodeServi
 	 * @param zmHscode
 	 * @return
 	 */
-	@AutoLog(value = "hscode-编辑")
-	@ApiOperation(value="hscode-编辑", notes="hscode-编辑")
+	@AutoLog(value = "hscode(已导出)-编辑")
+	@ApiOperation(value="hscode(已导出)-编辑", notes="hscode(已导出)-编辑")
 	@PutMapping(value = "/edit")
 	public Result<?> edit(@RequestBody ZmHscode zmHscode) {
 		zmHscodeService.updateById(zmHscode);
@@ -106,8 +106,8 @@ public class ZmHscodeController extends JeecgController<ZmHscode, IZmHscodeServi
 	 * @param id
 	 * @return
 	 */
-	@AutoLog(value = "hscode-通过id删除")
-	@ApiOperation(value="hscode-通过id删除", notes="hscode-通过id删除")
+	@AutoLog(value = "hscode(已导出)-通过id删除")
+	@ApiOperation(value="hscode(已导出)-通过id删除", notes="hscode(已导出)-通过id删除")
 	@DeleteMapping(value = "/delete")
 	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
 		zmHscodeService.removeById(id);
@@ -120,8 +120,8 @@ public class ZmHscodeController extends JeecgController<ZmHscode, IZmHscodeServi
 	 * @param ids
 	 * @return
 	 */
-	@AutoLog(value = "hscode-批量删除")
-	@ApiOperation(value="hscode-批量删除", notes="hscode-批量删除")
+	@AutoLog(value = "hscode(已导出)-批量删除")
+	@ApiOperation(value="hscode(已导出)-批量删除", notes="hscode(已导出)-批量删除")
 	@DeleteMapping(value = "/deleteBatch")
 	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
 		this.zmHscodeService.removeByIds(Arrays.asList(ids.split(",")));
@@ -134,8 +134,8 @@ public class ZmHscodeController extends JeecgController<ZmHscode, IZmHscodeServi
 	 * @param id
 	 * @return
 	 */
-	@AutoLog(value = "hscode-通过id查询")
-	@ApiOperation(value="hscode-通过id查询", notes="hscode-通过id查询")
+	@AutoLog(value = "hscode(已导出)-通过id查询")
+	@ApiOperation(value="hscode(已导出)-通过id查询", notes="hscode(已导出)-通过id查询")
 	@GetMapping(value = "/queryById")
 	public Result<?> queryById(@RequestParam(name="id",required=true) String id) {
 		ZmHscode zmHscode = zmHscodeService.getById(id);
@@ -153,7 +153,7 @@ public class ZmHscodeController extends JeecgController<ZmHscode, IZmHscodeServi
     */
     @RequestMapping(value = "/exportXls")
     public ModelAndView exportXls(HttpServletRequest request, ZmHscode zmHscode) {
-        return super.exportXls(request, zmHscode, ZmHscode.class, "hscode");
+        return super.exportXls(request, zmHscode, ZmHscode.class, "hscode(已导出)");
     }
 
     /**

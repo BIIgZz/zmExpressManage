@@ -222,4 +222,10 @@ public class ZmWaybill implements Serializable {
 	@Excel(name = "状态", width = 15)
     @ApiModelProperty(value = "状态")
     private java.lang.String status;
+    /**出货单号*/
+    @ApiModelProperty(value = "出货单号")
+    private java.lang.String deliveryOrderId;
+    /**提单号*/
+    @ApiModelProperty(value = "提单号")
+    private java.lang.String billId;
 }

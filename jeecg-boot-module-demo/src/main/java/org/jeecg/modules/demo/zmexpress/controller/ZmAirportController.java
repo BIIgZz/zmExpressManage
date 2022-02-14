@@ -39,7 +39,7 @@ import org.jeecg.common.aspect.annotation.AutoLog;
  /**
  * @Description: 机场/港口
  * @Author: jeecg-boot
- * @Date:   2021-08-09
+ * @Date:   2021-12-13
  * @Version: V1.0
  */
 @Api(tags="机场/港口")
@@ -127,7 +127,7 @@ public class ZmAirportController extends JeecgController<ZmAirport, IZmAirportSe
 		this.zmAirportService.removeByIds(Arrays.asList(ids.split(",")));
 		return Result.OK("批量删除成功!");
 	}
-//	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
+	
 	/**
 	 * 通过id查询
 	 *

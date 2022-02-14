@@ -20,7 +20,7 @@ import lombok.experimental.Accessors;
 /**
  * @Description: 物流信息
  * @Author: jeecg-boot
- * @Date:   2021-10-21
+ * @Date:   2021-12-21
  * @Version: V1.0
  */
 @Data
@@ -34,36 +34,36 @@ public class ZmLogisticsInformation implements Serializable {
 	/**主键*/
 	@TableId(type = IdType.ASSIGN_ID)
     @ApiModelProperty(value = "主键")
-    private String id;
+    private java.lang.String id;
 	/**创建人*/
     @ApiModelProperty(value = "创建人")
-    private String createBy;
+    private java.lang.String createBy;
 	/**创建日期*/
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "创建日期")
-    private Date createTime;
+    private java.util.Date createTime;
 	/**更新人*/
     @ApiModelProperty(value = "更新人")
-    private String updateBy;
+    private java.lang.String updateBy;
 	/**更新日期*/
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "更新日期")
-    private Date updateTime;
+    private java.util.Date updateTime;
 	/**所属部门*/
     @ApiModelProperty(value = "所属部门")
-    private String sysOrgCode;
+    private java.lang.String sysOrgCode;
 	/**订单编号*/
 	@Excel(name = "订单编号", width = 15)
     @ApiModelProperty(value = "订单编号")
-    private String orderId;
+    private java.lang.String orderId;
 	/**物流信息*/
 	@Excel(name = "物流信息", width = 15)
     @ApiModelProperty(value = "物流信息")
-    private String msg;
+    private java.lang.String msg;
 	/**备注*/
 	@Excel(name = "备注", width = 15)
     @ApiModelProperty(value = "备注")
-    private String remark;
+    private java.lang.String remark;
 }

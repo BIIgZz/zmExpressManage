@@ -20,7 +20,7 @@ import lombok.experimental.Accessors;
 /**
  * @Description: 货站/仓库
  * @Author: jeecg-boot
- * @Date:   2021-08-03
+ * @Date:   2021-12-13
  * @Version: V1.0
  */
 @Data
@@ -34,73 +34,75 @@ public class ZmStation implements Serializable {
 	/**主键*/
 	@TableId(type = IdType.ASSIGN_ID)
     @ApiModelProperty(value = "主键")
-    private String id;
+    private java.lang.String id;
 	/**创建人*/
     @ApiModelProperty(value = "创建人")
-    private String createBy;
+    private java.lang.String createBy;
 	/**创建日期*/
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "创建日期")
-    private Date createTime;
+    private java.util.Date createTime;
 	/**更新人*/
     @ApiModelProperty(value = "更新人")
-    private String updateBy;
+    private java.lang.String updateBy;
 	/**更新日期*/
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "更新日期")
-    private Date updateTime;
+    private java.util.Date updateTime;
 	/**所属部门*/
     @ApiModelProperty(value = "所属部门")
-    private String sysOrgCode;
+    private java.lang.String sysOrgCode;
 	/**站点名称(英)*/
 	@Excel(name = "站点名称(英)", width = 15)
     @ApiModelProperty(value = "站点名称(英)")
-    private String enName;
+    private java.lang.String enName;
 	/**负责人*/
 	@Excel(name = "负责人", width = 15)
     @ApiModelProperty(value = "负责人")
-    private String leader;
+    private java.lang.String leader;
 	/**联系手机*/
 	@Excel(name = "联系手机", width = 15)
     @ApiModelProperty(value = "联系手机")
-    private String phone;
+    private java.lang.String phone;
 	/**联系电话*/
 	@Excel(name = "联系电话", width = 15)
     @ApiModelProperty(value = "联系电话")
-    private String tel;
+    private java.lang.String tel;
 	/**地址*/
 	@Excel(name = "地址", width = 15)
     @ApiModelProperty(value = "地址")
-    private String address;
+    private java.lang.String address;
 	/**国家*/
-	@Excel(name = "国家", width = 15)
+	@Excel(name = "国家", width = 15, dictTable = "zm_tool_countries", dicText = "cname", dicCode = "cname")
+	@Dict(dictTable = "zm_tool_countries", dicText = "cname", dicCode = "cname")
     @ApiModelProperty(value = "国家")
-    private String country;
+    private java.lang.String country;
 	/**省/州*/
 	@Excel(name = "省/州", width = 15)
     @ApiModelProperty(value = "省/州")
-    private String state;
+    private java.lang.String state;
 	/**城市*/
 	@Excel(name = "城市", width = 15)
     @ApiModelProperty(value = "城市")
-    private String city;
+    private java.lang.String city;
 	/**邮编*/
 	@Excel(name = "邮编", width = 15)
     @ApiModelProperty(value = "邮编")
-    private String postCode;
+    private java.lang.String postCode;
 	/**状态*/
 	@Excel(name = "状态", width = 15, dicCode = "status")
 	@Dict(dicCode = "status")
     @ApiModelProperty(value = "状态")
-    private String stationStatus;
+    private java.lang.String stationStatus;
 	/**收货区域*/
-	@Excel(name = "收货区域", width = 15)
+	@Excel(name = "收货区域", width = 15, dictTable = "zm_area_receiving", dicText = "area_name", dicCode = "area_name")
+	@Dict(dictTable = "zm_area_receiving", dicText = "area_name", dicCode = "area_name")
     @ApiModelProperty(value = "收货区域")
-    private String stationArea;
+    private java.lang.String stationArea;
 	/**站点名称*/
 	@Excel(name = "站点名称", width = 15)
     @ApiModelProperty(value = "站点名称")
-    private String cnName;
+    private java.lang.String cnName;
 }

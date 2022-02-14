@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 /**
  * @Description: 货柜详情
  * @Author: jeecg-boot
- * @Date:   2021-12-13
+ * @Date:   2021-12-22
  * @Version: V1.0
  */
 public interface ZmImportGoodMapper extends BaseMapper<ZmImportGood> {

@@ -57,4 +57,8 @@ public class ZmClientMain implements Serializable {
     @Excel(name = "用户名", width = 15)
     @ApiModelProperty(value = "用户名")
     private String username;
+    /**用户名*/
+    @Excel(name = "用户审核状态", width = 15)
+    @ApiModelProperty(value = "用户审核状态")
+    private String status;
 }

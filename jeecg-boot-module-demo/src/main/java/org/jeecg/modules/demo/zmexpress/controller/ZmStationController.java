@@ -39,7 +39,7 @@ import org.jeecg.common.aspect.annotation.AutoLog;
  /**
  * @Description: 货站/仓库
  * @Author: jeecg-boot
- * @Date:   2021-08-03
+ * @Date:   2021-12-13
  * @Version: V1.0
  */
 @Api(tags="货站/仓库")

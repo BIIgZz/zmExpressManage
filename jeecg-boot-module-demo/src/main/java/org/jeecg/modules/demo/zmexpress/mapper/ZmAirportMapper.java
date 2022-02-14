@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 /**
  * @Description: 机场/港口
  * @Author: jeecg-boot
- * @Date:   2021-08-09
+ * @Date:   2021-12-13
  * @Version: V1.0
  */
 public interface ZmAirportMapper extends BaseMapper<ZmAirport> {

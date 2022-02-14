@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.jeecg.common.system.base.controller.JeecgController;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.demo.zmexpress.entity.ZmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
@@ -166,7 +167,22 @@ public class ZmFbaWarehouseController extends JeecgController<ZmFbaWarehouse, IZ
         IPage<ZmFbaWarehouseDetail> pageList = zmFbaWarehouseDetailService.page(page, queryWrapper);
         return Result.OK(pageList);
     }
-
+	 /**
+	  * 通过地址库id查询
+	  * @return
+	  */
+	 @AutoLog(value = "地址详情-通过地址库id查询")
+	 @ApiOperation(value="地址详情-通过主表ID查询", notes="地址详情-通过地址库id查询")
+	 @GetMapping(value = "/listZmFbaWarehouseDetailById")
+	 public Result<?> listZmFbaWarehouseDetailById(@RequestParam(name="code",required=true) String warehouseId) {
+		 QueryWrapper<ZmFbaWarehouseDetail> queryWrapperTest = new QueryWrapper<>();
+		 queryWrapperTest.eq("code", warehouseId);
+		 ZmFbaWarehouseDetail zmFbaWarehouseDetail = zmFbaWarehouseDetailService.getOne(queryWrapperTest);
+		 if(zmFbaWarehouseDetail==null) {
+			 return Result.error("未找到对应数据");
+		 }
+		 return Result.OK(zmFbaWarehouseDetail);
+	 }
 	/**
 	 * 添加
 	 * @param zmFbaWarehouseDetail

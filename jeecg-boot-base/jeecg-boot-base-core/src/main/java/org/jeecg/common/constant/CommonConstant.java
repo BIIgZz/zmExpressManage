@@ -142,10 +142,12 @@ public interface CommonConstant {
     public static final Integer RULE_FLAG_1 = 1;
 
     /**
-     * 是否用户已被冻结 1正常(解冻) 2冻结
+     * 是否用户已被冻结 1正常(解冻) 2冻结  3 未认证 4认证
      */
     public static final Integer USER_UNFREEZE = 1;
     public static final Integer USER_FREEZE = 2;
+//    public static final Integer USER_UNCERTIFY = 3;
+//    public static final Integer USER_CERTIFY = 4;
     
     /**字典翻译文本后缀*/
     public static final String DICT_TEXT_SUFFIX = "_dictText";

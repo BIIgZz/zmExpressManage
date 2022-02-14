@@ -24,6 +24,13 @@ import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.system.util.JwtUtil;
 import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.*;
+import org.jeecg.modules.demo.zmexpress.entity.ZmClientMain;
+import org.jeecg.modules.demo.zmexpress.entity.ZmUserBasic;
+import org.jeecg.modules.demo.zmexpress.entity.ZmUserDetail;
+import org.jeecg.modules.demo.zmexpress.rules.ShopOrderRule;
+import org.jeecg.modules.demo.zmexpress.service.IZmClientMainService;
+import org.jeecg.modules.demo.zmexpress.service.IZmUserBasicService;
+import org.jeecg.modules.demo.zmexpress.service.IZmUserDetailService;
 import org.jeecg.modules.system.entity.*;
 import org.jeecg.modules.system.model.DepartIdModel;
 import org.jeecg.modules.system.model.SysUserSysDepartModel;
@@ -35,6 +42,7 @@ import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.ImportParams;
 import org.jeecgframework.poi.excel.view.JeecgEntityExcelView;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -85,8 +93,20 @@ public class SysUserController {
     @Autowired
     private ISysDepartRoleService departRoleService;
 
+    @Autowired
+    private IZmUserBasicService zmUserBasicService;
+
+    @Autowired
+    private IZmUserDetailService zmUserDetailService;
+
+    @Autowired
+    private IZmClientMainService zmClientMainService;
+
 	@Autowired
 	private RedisUtil redisUtil;
+
+    @Autowired
+    private ShopOrderRule shopOrderRule;
 
     @Value("${jeecg.path.upload}")
     private String upLoadPath;
@@ -236,7 +256,57 @@ public class SysUserController {
 		return result;
 
     }
+    /**
+     * 通过认证
+     * @param zmUserDetail
+     * @return
+     */
+    //@RequiresRoles({"admin"})
+    @RequestMapping(value = "/pass", method = RequestMethod.PUT)
+    public Result<?> pass(@RequestBody ZmUserDetail zmUserDetail) {
+        Result<SysUser> result = new Result<SysUser>();
+        SysUser user = sysUserService.getOne(new QueryWrapper<SysUser>().eq("client_id", zmUserDetail.getUserId()));
+        user.setUserIdentity(1);
+        zmUserDetail.setStatus("1");
+        ZmClientMain zmClientMain = zmClientMainService.getOne(new QueryWrapper<ZmClientMain>().eq("code",zmUserDetail.getUserId()));
+        zmClientMain.setStatus("1");
+        try {
+            zmClientMainService.updateById(zmClientMain);
+            sysUserService.updateById(user);
+            zmUserDetailService.updateById(zmUserDetail);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            result.error500("操作失败"+e.getMessage());
+        }
+        result.success("认证成功!");
+        return result;
 
+    }
+    /**
+     * 审核驳回
+     * @param zmUserDetail
+     * @return
+     */
+    //@RequiresRoles({"admin"})
+    @RequestMapping(value = "/passOut", method = RequestMethod.PUT)
+    public Result<?> passOut(@RequestBody ZmUserDetail zmUserDetail) {
+        Result<SysUser> result = new Result<SysUser>();
+        SysUser user = sysUserService.getOne(new QueryWrapper<SysUser>().eq("client_id", zmUserDetail.getUserId()));
+        user.setUserIdentity(0);
+        zmUserDetail.setStatus("0");
+        ZmClientMain zmClientMain = zmClientMainService.getOne(new QueryWrapper<ZmClientMain>().eq("code",zmUserDetail.getUserId()));
+        zmClientMain.setStatus("0");
+        try {
+            zmClientMainService.updateById(zmClientMain);
+            sysUserService.updateById(user);
+            zmUserDetailService.updateById(zmUserDetail);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            result.error500("操作失败"+e.getMessage());
+        }
+        result.success("驳回成功!");
+        return result;
+    }
     @RequestMapping(value = "/queryById", method = RequestMethod.GET)
     public Result<SysUser> queryById(@RequestParam(name = "id", required = true) String id) {
         Result<SysUser> result = new Result<SysUser>();
@@ -914,18 +984,20 @@ public class SysUserController {
                 return result;
             }
         }
-        if(null == code){
-            result.setMessage("手机验证码失效，请重新获取");
-            result.setSuccess(false);
-            return result;
-        }
-		if (!smscode.equals(code.toString())) {
-			result.setMessage("手机验证码错误");
-			result.setSuccess(false);
-			return result;
-		}
+        //手机验证码
+//        if(null == code){
+//            result.setMessage("手机验证码失效，请重新获取");
+//            result.setSuccess(false);
+//            return result;
+//        }
+//		if (!smscode.equals(code.toString())) {
+//			result.setMessage("手机验证码错误");
+//			result.setSuccess(false);
+//			return result;
+//		}
 
 		try {
+            String clientId = shopOrderRule.autoUserNo();
 			user.setCreateTime(new Date());// 设置创建时间
 			String salt = oConvertUtils.randomGen(8);
 			String passwordEncode = PasswordUtil.encrypt(username, password, salt);
@@ -938,7 +1010,18 @@ public class SysUserController {
 			user.setStatus(CommonConstant.USER_UNFREEZE);
 			user.setDelFlag(CommonConstant.DEL_FLAG_0);
 			user.setActivitiSync(CommonConstant.ACT_SYNC_0);
-			sysUserService.addUserWithRole(user,"ee8626f80f7c2619917b6236f3a7f02b");//默认临时角色 test
+            user.setClientId(clientId);
+			sysUserService.addUserWithRole(user,"1485848421664718850");//默认临时角色 用户
+
+            ZmUserBasic userBasic = new ZmUserBasic();
+            userBasic.setStatus("0");
+            BeanUtils.copyProperties(user,userBasic);
+            zmUserBasicService.save(userBasic);
+
+            ZmClientMain zmClientMain = new ZmClientMain();
+            zmClientMain.setUsername(username);
+            zmClientMain.setCode(clientId);
+            zmClientMainService.save(zmClientMain);
 			result.success("注册成功");
 		} catch (Exception e) {
 			result.error500("注册失败");

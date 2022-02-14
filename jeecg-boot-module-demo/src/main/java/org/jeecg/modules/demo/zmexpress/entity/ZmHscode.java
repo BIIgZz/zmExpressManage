@@ -18,61 +18,81 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * @Description: hscode
+ * @Description: hscode(已导出)
  * @Author: jeecg-boot
- * @Date:   2021-07-19
+ * @Date:   2022-01-06
  * @Version: V1.0
  */
 @Data
 @TableName("zm_hscode")
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value="zm_hscode对象", description="hscode")
+@ApiModel(value="zm_hscode对象", description="hscode(已导出)")
 public class ZmHscode implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	/**id*/
 	@TableId(type = IdType.ASSIGN_ID)
     @ApiModelProperty(value = "id")
-    private String id;
+    private java.lang.String id;
 	/**海关编码*/
 	@Excel(name = "海关编码", width = 15)
     @ApiModelProperty(value = "海关编码")
-    private String hscode;
+    private java.lang.String hscode;
 	/**描述*/
 	@Excel(name = "描述", width = 15)
     @ApiModelProperty(value = "描述")
-    private String description;
-	/**材料*/
-	@Excel(name = "材料", width = 15)
-    @ApiModelProperty(value = "材料")
-    private String material;
+    private java.lang.String description;
+	/**材质*/
+	@Excel(name = "材质", width = 15)
+    @ApiModelProperty(value = "材质")
+    private java.lang.String material;
 	/**原始名称*/
 	@Excel(name = "原始名称", width = 15)
     @ApiModelProperty(value = "原始名称")
-    private String originalName;
+    private java.lang.String originalName;
 	/**建议名称*/
 	@Excel(name = "建议名称", width = 15)
     @ApiModelProperty(value = "建议名称")
-    private String suggestedName;
+    private java.lang.String suggestedName;
 	/**税率*/
 	@Excel(name = "税率", width = 15)
     @ApiModelProperty(value = "税率")
-    private String rateTax;
+    private java.lang.String rateTax;
 	/** 创建人*/
     @ApiModelProperty(value = " 创建人")
-    private String createBy;
+    private java.lang.String createBy;
 	/**修改日期*/
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "修改日期")
-    private Date updateTime;
+    private java.util.Date updateTime;
 	/**创建日期*/
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @ApiModelProperty(value = "创建日期")
-    private Date createTime;
+    private java.util.Date createTime;
 	/**更新人*/
     @ApiModelProperty(value = "更新人")
-    private String updateBy;
+    private java.lang.String updateBy;
+	/**美国海关编码*/
+	@Excel(name = "美国海关编码", width = 15)
+    @ApiModelProperty(value = "美国海关编码")
+    private java.lang.String hscodeUsa;
+	/**美国税率*/
+	@Excel(name = "美国税率", width = 15)
+    @ApiModelProperty(value = "美国税率")
+    private java.lang.String taxUsa;
+	/**美国建议名称*/
+	@Excel(name = "美国建议名称", width = 15)
+    @ApiModelProperty(value = "美国建议名称")
+    private java.lang.String nameUsa;
+	/**增税*/
+	@Excel(name = "增税", width = 15)
+    @ApiModelProperty(value = "增税")
+    private java.lang.String raiseTaxes;
+	/**备注*/
+	@Excel(name = "备注", width = 15)
+    @ApiModelProperty(value = "备注")
+    private java.lang.String remark;
 }

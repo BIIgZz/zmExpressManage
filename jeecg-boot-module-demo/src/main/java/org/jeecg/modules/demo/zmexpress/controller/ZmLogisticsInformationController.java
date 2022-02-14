@@ -13,6 +13,8 @@ import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.demo.zmexpress.entity.ZmLogisticsInformation;
+import org.jeecg.modules.demo.zmexpress.entity.ZmWaybills;
+import org.jeecg.modules.demo.zmexpress.service.IZmBillloadingService;
 import org.jeecg.modules.demo.zmexpress.service.IZmLogisticsInformationService;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -20,12 +22,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
+import org.jeecg.modules.demo.zmexpress.service.IZmWaybillsService;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.ImportParams;
 import org.jeecgframework.poi.excel.view.JeecgEntityExcelView;
 import org.jeecg.common.system.base.controller.JeecgController;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +43,7 @@ import org.jeecg.common.aspect.annotation.AutoLog;
  /**
  * @Description: 物流信息
  * @Author: jeecg-boot
- * @Date:   2021-10-21
+ * @Date:   2021-12-21
  * @Version: V1.0
  */
 @Api(tags="物流信息")
@@ -49,6 +53,10 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 public class ZmLogisticsInformationController extends JeecgController<ZmLogisticsInformation, IZmLogisticsInformationService> {
 	@Autowired
 	private IZmLogisticsInformationService zmLogisticsInformationService;
+	@Autowired
+	private IZmBillloadingService zmBillloadingService;
+	@Autowired
+	private IZmWaybillsService zmWaybillsService;
 	
 	/**
 	 * 分页列表查询
@@ -142,7 +150,6 @@ public class ZmLogisticsInformationController extends JeecgController<ZmLogistic
 		if(zmLogisticsInformation==null) {
 			return Result.error("未找到对应数据");
 		}
-		System.out.println("--------------");
 		return Result.OK(zmLogisticsInformation);
 	}
 
@@ -169,4 +176,76 @@ public class ZmLogisticsInformationController extends JeecgController<ZmLogistic
         return super.importExcel(request, response, ZmLogisticsInformation.class);
     }
 
-}
+
+	 /**
+	  * @title queryByOrderId
+	  * @description
+	  * @author zzh
+	  * @param: id
+	  * @updateTime 2021/12/24 19:53
+	  * @return: org.jeecg.common.api.vo.Result<?>
+	  * @throws
+	  */
+	 @GetMapping(value = "/queryByOrderId")
+	 public Result<?> queryByOrderId(@RequestParam(name="id",required=true) String id) {
+
+		 QueryWrapper<ZmLogisticsInformation> queryWrapper = new QueryWrapper<>();
+		 queryWrapper.eq("order_id",id);
+		 List<ZmLogisticsInformation> zmLogisticsInformations = zmLogisticsInformationService.list(queryWrapper);
+		 if(zmLogisticsInformations==null) {
+			 return Result.error("未找到对应数据");
+		 }
+		 return Result.OK(zmLogisticsInformations);
+	 }
+
+	 /**
+	  * 通过运单id查询
+	  *
+	  * @param waybillId 运单id
+	  * @return
+	  */
+	 @AutoLog(value = "物流信息-通过运单id查询")
+	 @ApiOperation(value="物流信息-通过运单id查询", notes="物流信息-通过运单id查询")
+	 @GetMapping(value = "/queryByWaybillId")
+	 public Result<?> queryByWaybillId(@RequestParam(name="waybillId",required=true) String waybillId) {
+		 QueryWrapper<ZmLogisticsInformation> queryWrapper = new QueryWrapper<>();
+		 queryWrapper.eq("order_id",waybillId);
+		 List<ZmLogisticsInformation> list = zmLogisticsInformationService.list(queryWrapper);
+		 if(list==null) {
+			 return Result.error("未找到对应数据");
+		 }
+		 return Result.OK(list);
+	 }
+
+	 /**
+	  * @title addMsg
+	  * @description
+	  * @author zzh
+	  * @param: zmLogisticsInformation
+	  * @updateTime 2021/12/24 20:26
+	  * @return: org.jeecg.common.api.vo.Result<?>
+	  * @throws
+	  */
+
+	 @PutMapping(value = "/addMsg")
+	 public Result<?> addMsg(@RequestBody ZmLogisticsInformation zmLogisticsInformation) {
+		 //设置运单物流信息
+		 QueryWrapper<ZmWaybills> queryWrapperWay = new QueryWrapper<>();
+		 queryWrapperWay.eq("bill_id",zmLogisticsInformation.getOrderId());
+		 List<ZmWaybills> list = zmWaybillsService.list(queryWrapperWay);
+		 for (ZmWaybills zmWaybills : list) {
+			 ZmLogisticsInformation zmLogisticsInformationWayBill = new ZmLogisticsInformation();
+			 BeanUtils.copyProperties(zmLogisticsInformation,zmLogisticsInformationWayBill);
+			 zmLogisticsInformation.setOrderId(zmWaybills.getOrderId());
+			 zmLogisticsInformationService.save(zmLogisticsInformationWayBill);
+		 }
+		 //设置提单物流信息
+		 zmLogisticsInformationService.save(zmLogisticsInformation);
+		 return Result.OK("路由信息添加成功！");
+	 }
+
+
+
+
+
+ }

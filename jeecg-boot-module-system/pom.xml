@@ -64,8 +64,14 @@
 			<artifactId>jeecg-boot-module-demo</artifactId>
 			<version>3.0</version>
 		</dependency>
+        <dependency>
+            <groupId>org.jeecgframework.boot</groupId>
+            <artifactId>jeecg-boot-module-demo</artifactId>
+            <version>3.0</version>
+            <scope>compile</scope>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>

@@ -37,12 +37,12 @@ import io.swagger.annotations.ApiOperation;
 import org.jeecg.common.aspect.annotation.AutoLog;
 
  /**
- * @Description: zm_service
+ * @Description: 服务
  * @Author: jeecg-boot
- * @Date:   2021-08-03
+ * @Date:   2021-12-30
  * @Version: V1.0
  */
-@Api(tags="zm_service")
+@Api(tags="服务")
 @RestController
 @RequestMapping("/zmexpress/zmService")
 @Slf4j
@@ -59,8 +59,8 @@ public class ZmServiceController extends JeecgController<ZmService, IZmServiceSe
 	 * @param req
 	 * @return
 	 */
-	@AutoLog(value = "zm_service-分页列表查询")
-	@ApiOperation(value="zm_service-分页列表查询", notes="zm_service-分页列表查询")
+	@AutoLog(value = "服务-分页列表查询")
+	@ApiOperation(value="服务-分页列表查询", notes="服务-分页列表查询")
 	@GetMapping(value = "/list")
 	public Result<?> queryPageList(ZmService zmService,
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
@@ -78,8 +78,8 @@ public class ZmServiceController extends JeecgController<ZmService, IZmServiceSe
 	 * @param zmService
 	 * @return
 	 */
-	@AutoLog(value = "zm_service-添加")
-	@ApiOperation(value="zm_service-添加", notes="zm_service-添加")
+	@AutoLog(value = "服务-添加")
+	@ApiOperation(value="服务-添加", notes="服务-添加")
 	@PostMapping(value = "/add")
 	public Result<?> add(@RequestBody ZmService zmService) {
 		zmServiceService.save(zmService);
@@ -92,8 +92,8 @@ public class ZmServiceController extends JeecgController<ZmService, IZmServiceSe
 	 * @param zmService
 	 * @return
 	 */
-	@AutoLog(value = "zm_service-编辑")
-	@ApiOperation(value="zm_service-编辑", notes="zm_service-编辑")
+	@AutoLog(value = "服务-编辑")
+	@ApiOperation(value="服务-编辑", notes="服务-编辑")
 	@PutMapping(value = "/edit")
 	public Result<?> edit(@RequestBody ZmService zmService) {
 		zmServiceService.updateById(zmService);
@@ -106,8 +106,8 @@ public class ZmServiceController extends JeecgController<ZmService, IZmServiceSe
 	 * @param id
 	 * @return
 	 */
-	@AutoLog(value = "zm_service-通过id删除")
-	@ApiOperation(value="zm_service-通过id删除", notes="zm_service-通过id删除")
+	@AutoLog(value = "服务-通过id删除")
+	@ApiOperation(value="服务-通过id删除", notes="服务-通过id删除")
 	@DeleteMapping(value = "/delete")
 	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
 		zmServiceService.removeById(id);
@@ -120,8 +120,8 @@ public class ZmServiceController extends JeecgController<ZmService, IZmServiceSe
 	 * @param ids
 	 * @return
 	 */
-	@AutoLog(value = "zm_service-批量删除")
-	@ApiOperation(value="zm_service-批量删除", notes="zm_service-批量删除")
+	@AutoLog(value = "服务-批量删除")
+	@ApiOperation(value="服务-批量删除", notes="服务-批量删除")
 	@DeleteMapping(value = "/deleteBatch")
 	public Result<?> deleteBatch(@RequestParam(name="ids",required=true) String ids) {
 		this.zmServiceService.removeByIds(Arrays.asList(ids.split(",")));
@@ -134,8 +134,8 @@ public class ZmServiceController extends JeecgController<ZmService, IZmServiceSe
 	 * @param id
 	 * @return
 	 */
-	@AutoLog(value = "zm_service-通过id查询")
-	@ApiOperation(value="zm_service-通过id查询", notes="zm_service-通过id查询")
+	@AutoLog(value = "服务-通过id查询")
+	@ApiOperation(value="服务-通过id查询", notes="服务-通过id查询")
 	@GetMapping(value = "/queryById")
 	public Result<?> queryById(@RequestParam(name="id",required=true) String id) {
 		ZmService zmService = zmServiceService.getById(id);
@@ -153,7 +153,7 @@ public class ZmServiceController extends JeecgController<ZmService, IZmServiceSe
     */
     @RequestMapping(value = "/exportXls")
     public ModelAndView exportXls(HttpServletRequest request, ZmService zmService) {
-        return super.exportXls(request, zmService, ZmService.class, "zm_service");
+        return super.exportXls(request, zmService, ZmService.class, "服务");
     }
 
     /**

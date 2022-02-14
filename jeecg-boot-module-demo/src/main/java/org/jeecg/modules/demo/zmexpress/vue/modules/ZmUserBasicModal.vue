@@ -1,35 +1,34 @@
 <template>
   <j-modal
     :title="title"
-    :width="1200"
+    :width="width"
     :visible="visible"
-    :maskClosable="false"
     switchFullscreen
     @ok="handleOk"
     :okButtonProps="{ class:{'jee-hidden': disableSubmit} }"
-    @cancel="handleCancel">
-    <zm-waybill-form ref="realForm" @ok="submitCallback" :disabled="disableSubmit"/>
+    @cancel="handleCancel"
+    cancelText="关闭">
+    <zm-user-basic-form ref="realForm" @ok="submitCallback" :disabled="disableSubmit"></zm-user-basic-form>
   </j-modal>
 </template>
 
 <script>
 
-  import ZmWaybillForm from './ZmWaybillForm'
-
+  import ZmUserBasicForm from './ZmUserBasicForm'
   export default {
-    name: 'ZmWaybillModal',
+    name: 'ZmUserBasicModal',
     components: {
-      ZmWaybillForm
+      ZmUserBasicForm
     },
-    data() {
+    data () {
       return {
         title:'',
-        width:800,
+        width:896,
         visible: false,
         disableSubmit: false
       }
     },
-    methods:{
+    methods: {
       add () {
         this.visible=true
         this.$nextTick(()=>{
@@ -47,7 +46,7 @@
         this.visible = false;
       },
       handleOk () {
-        this.$refs.realForm.handleOk();
+        this.$refs.realForm.submitForm();
       },
       submitCallback(){
         this.$emit('ok');
@@ -59,6 +58,3 @@
     }
   }
 </script>
-
-<style scoped>
-</style>

@@ -1,5 +1,6 @@
 package org.jeecg.modules.demo.zmexpress.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import org.jeecg.modules.demo.zmexpress.entity.ZmFbaWarehouseDetail;
 import org.jeecg.modules.demo.zmexpress.mapper.ZmFbaWarehouseDetailMapper;
 import org.jeecg.modules.demo.zmexpress.service.IZmFbaWarehouseDetailService;
@@ -23,5 +24,10 @@ public class ZmFbaWarehouseDetailServiceImpl extends ServiceImpl<ZmFbaWarehouseD
 	@Override
 	public List<ZmFbaWarehouseDetail> selectByMainId(String mainId) {
 		return zmFbaWarehouseDetailMapper.selectByMainId(mainId);
+	}
+
+	@Override
+	public ZmFbaWarehouseDetail getOne(Wrapper<ZmFbaWarehouseDetail> queryWrapper) {
+		return super.getOne(queryWrapper);
 	}
 }

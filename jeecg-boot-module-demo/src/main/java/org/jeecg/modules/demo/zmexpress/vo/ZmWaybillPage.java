@@ -220,6 +220,7 @@ public class ZmWaybillPage {
 	@ApiModelProperty(value = "状态")
     private java.lang.String status;
 
+
 	@ExcelCollection(name="货柜详情")
 	@ApiModelProperty(value = "货柜详情")
 	private List<ZmImportGood> zmImportGoodList;
