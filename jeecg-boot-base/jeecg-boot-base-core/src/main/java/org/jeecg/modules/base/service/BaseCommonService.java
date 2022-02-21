@@ -30,5 +30,12 @@ public interface BaseCommonService {
      * @param operateType
      */
     void addLog(String LogContent, Integer logType, Integer operateType);
+    /**
+     * 保存日志
+     * @param LogContent
+     * @param logType
+     * @param operateType
+     */
+    void addLog(String LogContent, Integer logType, Integer operateType, String requestParam,LoginUser user);
 
 }

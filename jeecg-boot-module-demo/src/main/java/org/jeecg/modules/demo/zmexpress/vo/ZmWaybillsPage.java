@@ -30,11 +30,7 @@ public class ZmWaybillsPage {
 	/**创建人*/
 	@ApiModelProperty(value = "创建人")
     private java.lang.String createBy;
-	/**创建日期*/
-	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	@ApiModelProperty(value = "创建日期")
-    private java.util.Date createTime;
+
 	/**更新人*/
 	@ApiModelProperty(value = "更新人")
     private java.lang.String updateBy;
@@ -150,7 +146,7 @@ public class ZmWaybillsPage {
 	@ApiModelProperty(value = "收件人邮箱")
     private java.lang.String recipientEmail;
 	/**件数*/
-	@Excel(name = "件数", width = 15)
+	@Excel(name = "件数", width = 15,isStatistics = true)
 	@ApiModelProperty(value = "件数")
     private java.lang.String pieces;
 	/**主品名*/
@@ -158,35 +154,35 @@ public class ZmWaybillsPage {
 	@ApiModelProperty(value = "主品名")
     private java.lang.String mainProductName;
 	/**收费重量(KG)*/
-	@Excel(name = "收费重量(KG)", width = 15)
+	@Excel(name = "收费重量(KG)", width = 15,isStatistics = true)
 	@ApiModelProperty(value = "收费重量(KG)")
     private java.lang.String weightCharge;
 	/**实际重量(KG)*/
-	@Excel(name = "实际重量(KG)", width = 15)
+	@Excel(name = "实际重量(KG)", width = 15,isStatistics = true)
 	@ApiModelProperty(value = "实际重量(KG)")
-    private java.lang.String weightActual;
+    private java.lang.Double weightActual;
 	/**材积重(KG)*/
-	@Excel(name = "材积重(KG)", width = 15)
+	@Excel(name = "材积重(KG)", width = 15,isStatistics = true)
 	@ApiModelProperty(value = "材积重(KG)")
     private java.lang.String weightVolume;
 	/**体积(M³)*/
-	@Excel(name = "体积(M³)", width = 15)
+	@Excel(name = "体积(M³)", width = 15,isStatistics = true)
 	@ApiModelProperty(value = "体积(M³)")
-    private java.lang.String volume;
+    private java.lang.Double volume;
 	/**客户重量(KG)*/
-	@Excel(name = "客户重量(KG)", width = 15)
+//	@Excel(name = "客户重量(KG)", width = 15)
 	@ApiModelProperty(value = "客户重量(KG)")
     private java.lang.String weightCustomer;
 	/**客户长度(CM)*/
-	@Excel(name = "客户长度(CM)", width = 15)
+//	@Excel(name = "客户长度(CM)", width = 15)
 	@ApiModelProperty(value = "客户长度(CM)")
     private java.lang.String lengthCustomer;
 	/**客户宽度(CM)*/
-	@Excel(name = "客户宽度(CM)", width = 15)
+//	@Excel(name = "客户宽度(CM)", width = 15)
 	@ApiModelProperty(value = "客户宽度(CM)")
     private java.lang.String widthCustomer;
 	/**客户高度(CM)*/
-	@Excel(name = "客户高度(CM)", width = 15)
+//	@Excel(name = "客户高度(CM)", width = 15)
 	@ApiModelProperty(value = "客户高度(CM)")
     private java.lang.String heightCustomer;
 	/**计泡系数*/
@@ -379,11 +375,11 @@ public class ZmWaybillsPage {
 	@ApiModelProperty(value = "出货时间")
     private java.util.Date timeDelivery;
 	/**下单时间*/
-	@Excel(name = "下单时间", width = 15, format = "yyyy-MM-dd")
-	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-	@ApiModelProperty(value = "下单时间")
-    private java.util.Date timeOrder;
+	@Excel(name = "下单时间", width = 15, format = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@ApiModelProperty(value = "创建日期")
+	private java.util.Date createTime;
 	/**出货单号*/
 	@Excel(name = "出货单号", width = 15)
 	@ApiModelProperty(value = "出货单号")
@@ -393,7 +389,7 @@ public class ZmWaybillsPage {
 	@ApiModelProperty(value = "提单号")
     private java.lang.String billId;
 	
-	@ExcelCollection(name="货柜详情")
+//	@ExcelCollection(name="货柜详情")
 	@ApiModelProperty(value = "货柜详情")
 	private List<ZmGoodCase> zmGoodCaseList;
 
@@ -404,51 +400,51 @@ public class ZmWaybillsPage {
 	private java.lang.String poNumber;
 
 	/**发件人地址编码*/
-	@Excel(name = "senderAddressCode", width = 15)
+//	@Excel(name = "发件人地址编码", width = 15)
 	@ApiModelProperty(value = "senderAddressCode")
 	private java.lang.String senderAddressCode;
 	/**发件人姓名*/
-	@Excel(name = "senderName", width = 15)
+//	@Excel(name = "发件人姓名", width = 15)
 	@ApiModelProperty(value = "senderName")
 	private java.lang.String senderName;
 	/**发件人公司*/
-	@Excel(name = "senderCompany", width = 15)
+//	@Excel(name = "发件人公司", width = 15)
 	@ApiModelProperty(value = "senderCompany")
 	private java.lang.String senderCompany;
 	/**发件人地址一*/
-	@Excel(name = "senderAddressOne", width = 15)
+//	@Excel(name = "发件人地址一", width = 15)
 	@ApiModelProperty(value = "senderAddressOne")
 	private java.lang.String senderAddressOne;
 	/**发件人地址二*/
-	@Excel(name = "senderAddressTwo", width = 15)
+//	@Excel(name = "发件人地址二", width = 15)
 	@ApiModelProperty(value = "senderAddressTwo")
 	private java.lang.String senderAddressTwo;
 	/**发件人地址三*/
-	@Excel(name = "senderAddressTri", width = 15)
+//	@Excel(name = "发件人地址三", width = 15)
 	@ApiModelProperty(value = "senderAddressTri")
 	private java.lang.String senderAddressTri;
 	/**发件人城市*/
-	@Excel(name = "senderCity", width = 15)
+//	@Excel(name = "发件人城市", width = 15)
 	@ApiModelProperty(value = "senderCity")
 	private java.lang.String senderCity;
 	/**发件人省份*/
-	@Excel(name = "senderState", width = 15)
+//	@Excel(name = "发件人省份", width = 15)
 	@ApiModelProperty(value = "senderState")
 	private java.lang.String senderState;
 	/**发件人邮编*/
-	@Excel(name = "senderZipCode", width = 15)
+//	@Excel(name = "发件人邮编", width = 15)
 	@ApiModelProperty(value = "senderZipCode")
 	private java.lang.String senderZipCode;
 	/**发件人国家*/
-	@Excel(name = "senderCountry", width = 15)
+//	@Excel(name = "发件人国家", width = 15)
 	@ApiModelProperty(value = "senderCountry")
 	private java.lang.String senderCountry;
 	/**发件人电话*/
-	@Excel(name = "senderTel", width = 15)
+//	@Excel(name = "发件人电话", width = 15)
 	@ApiModelProperty(value = "senderTel")
 	private java.lang.String senderTel;
 	/**发件人邮箱*/
-	@Excel(name = "senderEmail", width = 15)
+//	@Excel(name = "发件人邮箱", width = 15)
 	@ApiModelProperty(value = "senderEmail")
 	private java.lang.String senderEmail;
 }

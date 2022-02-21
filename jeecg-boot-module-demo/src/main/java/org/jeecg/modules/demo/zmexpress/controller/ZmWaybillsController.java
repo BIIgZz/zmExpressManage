@@ -15,8 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.afterturn.easypoi.excel.entity.result.ExcelImportResult;
+import org.jeecg.common.api.dto.LogDTO;
 import org.jeecg.common.aspect.annotation.PermissionData;
+import org.jeecg.common.constant.CommonConstant;
 import org.jeecg.common.util.CommonUtils;
+import org.jeecg.modules.base.service.BaseCommonService;
 import org.jeecg.modules.demo.zmexpress.entity.*;
 import org.jeecg.modules.demo.zmexpress.rules.ShopOrderRule;
 import org.jeecg.modules.demo.zmexpress.service.*;
@@ -80,6 +83,8 @@ public class ZmWaybillsController {
 	private IZmServiceService zmServiceService;
 	@Autowired
 	private IZmFilePathService zmFilePathService;
+	@Autowired
+	private BaseCommonService baseCommonService;
 
 	@Value(value = "${jeecg.path.upload}")
 	private String uploadpath;
@@ -250,8 +255,8 @@ public class ZmWaybillsController {
 		for (ZmWaybills main : zmWaybillsList) {
 			ZmWaybillsPage vo = new ZmWaybillsPage();
 			BeanUtils.copyProperties(main, vo);
-			List<ZmGoodCase> zmGoodCaseList = zmGoodCaseService.selectByMainId(main.getId());
-			vo.setZmGoodCaseList(zmGoodCaseList);
+//			List<ZmGoodCase> zmGoodCaseList = zmGoodCaseService.selectByMainId(main.getId());
+//			vo.setZmGoodCaseList(zmGoodCaseList);
 			pageList.add(vo);
 		}
 
@@ -531,8 +536,10 @@ public class ZmWaybillsController {
 				return Result.error("未找到对应数据");
 			}
 			zmWaybill.setStatus("已取消");
+			baseCommonService.addLog("取消订单",CommonConstant.LOG_TYPE_2,CommonConstant.OPERATE_TYPE_3,zmWaybill.getId(),null);
 			zmWaybillsService.updateMain(zmWaybill, zmImportGoods);
 		}
+
 		return Result.OK("订单取消成功！");
 	}
 
@@ -547,7 +554,6 @@ public class ZmWaybillsController {
 		//判断当前订单状态 和 需要转换的状态
 		ids = ids.replaceAll("[^-?0-9]+", " ");
 		List<String> list = Arrays.asList(ids.trim().split(" "));
-		System.out.println(Arrays.asList(ids.trim().split(" ")));
 		for (String id : list) {
 			ZmWaybills zmWaybill = zmWaybillsService.getById(id);
 			List<ZmGoodCase> zmImportGoods = zmGoodCaseService.selectByMainId(id);
@@ -556,6 +562,7 @@ public class ZmWaybillsController {
 				return Result.error("未找到对应数据");
 			}
 			zmWaybill.setStatus("已下单");
+			baseCommonService.addLog("重新发货",CommonConstant.LOG_TYPE_2,CommonConstant.OPERATE_TYPE_3,zmWaybill.getId(),null);
 			zmWaybillsService.updateMain(zmWaybill, zmImportGoods);
 		}
 		return Result.OK("发货成功！");
@@ -619,6 +626,7 @@ public class ZmWaybillsController {
 			}
 
 			zmWaybill.setStatus("已收货");
+			baseCommonService.addLog("拣货成功",CommonConstant.LOG_TYPE_2,CommonConstant.OPERATE_TYPE_3,zmWaybill.getId(),null);
 			zmWaybillsService.updateMain(zmWaybill, zmImportGoods);
 
 		}
@@ -695,6 +703,8 @@ public class ZmWaybillsController {
 		for (String id : list) {
 			//获取运单列表
 			ZmWaybills zmWaybill = zmWaybillsService.getById(id);
+			baseCommonService.addLog("加入出货单，出货单号："+zmDeliveryOrder.getDeliveryOrderNo(),CommonConstant.LOG_TYPE_2,CommonConstant.OPERATE_TYPE_3,zmWaybill.getId(),null);
+
 			if (zmWaybill == null) {
 				return Result.error("未找到对应数据");
 			}
@@ -738,6 +748,8 @@ public class ZmWaybillsController {
 			if (zmWaybill == null) {
 				return Result.error("未找到对应数据");
 			}
+			baseCommonService.addLog("加入提单，提单号："+zmBillloading.getBillnum(),CommonConstant.LOG_TYPE_2,CommonConstant.OPERATE_TYPE_3,zmWaybill.getId(),null);
+
 			zmWaybill.setStatus("转运中");
 			zmLogisticsInformation.setOrderId(zmWaybill.getId());
 			zmLogisticsInformation.setMsg("从 "+zmBillloading.getDeparturePoint()+" 发往 "
@@ -754,6 +766,7 @@ public class ZmWaybillsController {
 			}
 			zmWaybillsService.updateById(zmWaybill);
 		}
+
 		return Result.OK("加入提单成功");
 	}
 
@@ -869,7 +882,7 @@ public class ZmWaybillsController {
 		ZmWaybillStatistics zmWaybillStatistics = new ZmWaybillStatistics();
 		double weight = 0;
 		double volumn = 0;
-		double weightCharge = 0;
+		BigDecimal weightCharge = new BigDecimal("0");
 		double volumeWeight = 0;
 		double weightB = 0;
 		DecimalFormat df = new DecimalFormat("0.000");
@@ -881,22 +894,24 @@ public class ZmWaybillsController {
 						 *Double.parseDouble(zmGoodCase.getHeightActually())
 						 *Double.parseDouble(zmGoodCase.getWidthActually())/1000000;
 				volumeWeight += Double.parseDouble(zmGoodCase.getWeightVolume());
-				weightCharge += Double.parseDouble(zmGoodCase.getWeightCharge());
+				weightCharge=weightCharge.add(zmGoodCase.getWeightCharge()) ;
 			}
 			if (weight < zmService.getMinTicketChargeWeight()){
 				double vm = Math.ceil(volumeWeight);
-				weightCharge = vm - (vm - zmService.getMinTicketChargeWeight()) * zmService.getBubbleSplittingRatio();
+				weightCharge.add(new BigDecimal(vm - (vm - zmService.getMinTicketChargeWeight()) * zmService.getBubbleSplittingRatio()) );
 			}
-			if (weightCharge<weightB){
-				weightCharge=weightB;
+
+			if (weightCharge.compareTo(new BigDecimal(weightB))==-1){
+				weightCharge=new BigDecimal(weightB);
 			}
 //			volumeWeight = Double.parseDouble(df.format(volumn*1000000/Double.parseDouble(zmService.getBubble())));
 //			weightCharge = (volumeWeight-zmService.getMinBoxWeight()*zmGoodCases.size())*(1-zmService.getBubbleSplittingRatio())+zmService.getMinBoxWeight()*zmGoodCases.size();
 		}
-		zmWaybillStatistics.setVolume(Double.parseDouble(df.format(volumn)));
-		zmWaybillStatistics.setVolumnWeight(BigDecimal.valueOf(volumeWeight)
+		double valueVolumeWeight = BigDecimal.valueOf(volumeWeight)
 				.setScale(1, RoundingMode.UP)
-				.doubleValue());
+				.doubleValue();
+		zmWaybillStatistics.setVolume(Double.parseDouble(df.format(volumn)));
+		zmWaybillStatistics.setVolumnWeight(valueVolumeWeight);
 		zmWaybillStatistics.setWeight(weightB);
 		zmWaybillStatistics.setFoamingFactor(zmService.getBubble());
 		zmWaybillStatistics.setWeightCharge(Math.ceil(Double.parseDouble(df.format(weightCharge))));
@@ -904,6 +919,11 @@ public class ZmWaybillsController {
 		zmWaybillStatistics.setBubbleSplittingRatio(zmService.getBubbleSplittingRatio());
 		zmWaybillStatistics.setMinBoxWeight(zmService.getMinBoxWeight());
 		zmWaybillStatistics.setMinTicketChargeWeight(zmService.getMinTicketChargeWeight());
+		zmWaybills.setWeightActual(weightB);
+		zmWaybills.setWeightCharge(String.valueOf(Math.ceil(Double.parseDouble(df.format(weightCharge)))));
+		zmWaybills.setVolume(Double.parseDouble(df.format(volumn)));
+		zmWaybills.setWeightVolume(String.valueOf(valueVolumeWeight));
+		zmWaybillsService.updateById(zmWaybills);
 		return Result.OK(zmWaybillStatistics);
 	}
 
@@ -1109,6 +1129,8 @@ public class ZmWaybillsController {
 			ZmWaybills po = new ZmWaybills();
 			BeanUtils.copyProperties(zmWaybillsPage, po);
 			po.setStatus("已下单");
+			po.setMainProductName(zmGoodCases.get(0).getCnName());
+			po.setPieces(String.valueOf(zmGoodCases.size()));
 			po.setWaybillId(orderId);
 			po.setId(id);
 			zmWaybillsService.saveMain(po, zmGoodCases);
@@ -1118,6 +1140,7 @@ public class ZmWaybillsController {
 			String msg = "已下单-" + TimeUtils.getNowTime();
 			zmLogisticsInformation.setMsg(msg);
 			zmLogisticsInformationService.save(zmLogisticsInformation);
+			baseCommonService.addLog("创建运单",CommonConstant.LOG_TYPE_2,CommonConstant.OPERATE_TYPE_3,id,null);
 
 			//存入本地
 			MultipartFile multipartFile = fileMap.get("files[]");// 获取上传文件对象
@@ -1165,6 +1188,7 @@ public class ZmWaybillsController {
 				e.printStackTrace();
 			}
 		}
+
 		return  Result.OK(name[0]+" 下单成功");
 	}
 
@@ -1202,4 +1226,22 @@ public class ZmWaybillsController {
 		}
 		return Result.OK(status+"成功！");
 	}
+	/**
+	 * @title
+	 * @description 统计运单
+	 * @author zzh
+	 * @updateTime 2022/2/15 20:14
+	 * @throws
+	 */
+	@AutoLog(value = "运单全表-统计运单")
+	@ApiOperation(value = "运单全表-统计运单", notes = "运单全表-统计运单")
+	@GetMapping(value = "/statics")
+	public Result<?> statics(@RequestParam(name = "id", required = true) String id) {
+		ZmWaybills zmWaybills = zmWaybillsService.getById(id);
+		if (zmWaybills == null) {
+			return Result.error("未找到对应数据");
+		}
+		return Result.OK(zmWaybills);
+	}
+
 }

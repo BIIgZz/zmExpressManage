@@ -2,6 +2,7 @@ package org.jeecg.modules.system.controller;
 
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -112,6 +113,18 @@ public class SysLogController {
 		}
 		return result;
 	}
-	
+	/**
+	 * @功能：查询日志记录
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/query", method = RequestMethod.GET)
+	public Result<?> queryById(@RequestParam(name = "id")String id) {
+
+		QueryWrapper<SysLog> queryWrapper = new QueryWrapper<SysLog>().eq("request_param",id);
+		List<SysLog> sysLogs = sysLogService.list(queryWrapper);
+
+		return Result.OK(sysLogs);
+	}
 	
 }

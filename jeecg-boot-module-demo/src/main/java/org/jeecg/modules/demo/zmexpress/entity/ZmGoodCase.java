@@ -8,6 +8,8 @@ import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.jeecgframework.poi.excel.annotation.Excel;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import org.jeecg.common.aspect.annotation.Dict;
 import io.swagger.annotations.ApiModel;
@@ -146,7 +148,7 @@ public class ZmGoodCase implements Serializable {
     /**收费重*/
     @Excel(name = "收费重", width = 15)
     @ApiModelProperty(value = "收费重")
-    private java.lang.String weightCharge;
+    private BigDecimal weightCharge;
 
     /**材积重*/
     @Excel(name = "材积重", width = 15)
