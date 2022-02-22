@@ -27,9 +27,7 @@ public class ZmWaybillsPage {
 	/**主键*/
 	@ApiModelProperty(value = "主键")
     private java.lang.String id;
-	/**创建人*/
-	@ApiModelProperty(value = "创建人")
-    private java.lang.String createBy;
+
 
 	/**更新人*/
 	@ApiModelProperty(value = "更新人")
@@ -66,8 +64,12 @@ public class ZmWaybillsPage {
 	@Excel(name = "用户编号", width = 15)
 	@ApiModelProperty(value = "用户编号")
     private java.lang.String userId;
+	/**创建人*/
+	@Excel(name = "用户名", width = 15)
+	@ApiModelProperty(value = "创建人")
+	private java.lang.String createBy;
 	/**用户名*/
-	@Excel(name = "用户名", width = 15, dictTable = "zm_client_main", dicText = "username", dicCode = "username")
+	@Excel(name = "客户名", width = 15, dictTable = "zm_client_main", dicText = "username", dicCode = "username")
     @Dict(dictTable = "zm_client_main", dicText = "username", dicCode = "username")
 	@ApiModelProperty(value = "用户名")
     private java.lang.String username;
