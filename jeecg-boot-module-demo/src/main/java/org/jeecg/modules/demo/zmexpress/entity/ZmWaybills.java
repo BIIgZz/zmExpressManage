@@ -31,6 +31,8 @@ public class ZmWaybills implements Serializable {
     @ApiModelProperty(value = "主键")
     private java.lang.String id;
 	/**创建人*/
+    /**用户名*/
+    @Excel(name = "用户名", width = 15)
     @ApiModelProperty(value = "创建人")
     private java.lang.String createBy;
 	/**创建日期*/
@@ -74,9 +76,9 @@ public class ZmWaybills implements Serializable {
     @ApiModelProperty(value = "用户编号")
     private java.lang.String userId;
 	/**用户名*/
-	@Excel(name = "用户名", width = 15, dictTable = "zm_client_main", dicText = "username", dicCode = "username")
+	@Excel(name = "客户名", width = 15, dictTable = "zm_client_main", dicText = "username", dicCode = "username")
     @Dict(dictTable = "zm_client_main", dicText = "username", dicCode = "username")
-    @ApiModelProperty(value = "用户名")
+    @ApiModelProperty(value = "客户名")
     private java.lang.String username;
 	/**服务*/
 	@Excel(name = "服务", width = 15, dictTable = "zm_service", dicText = "name", dicCode = "name")
