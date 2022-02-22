@@ -897,8 +897,9 @@ public class ZmWaybillsController {
 				weightCharge=weightCharge.add(zmGoodCase.getWeightCharge()) ;
 			}
 			if (weight < zmService.getMinTicketChargeWeight()){
-				double vm = Math.ceil(volumeWeight);
-				weightCharge.add(new BigDecimal(vm - (vm - zmService.getMinTicketChargeWeight()) * zmService.getBubbleSplittingRatio()) );
+//				double vm = Math.ceil(volumeWeight);
+//				weightCharge.add(new BigDecimal(vm - (vm - zmService.getMinTicketChargeWeight()) * zmService.getBubbleSplittingRatio()) );
+				weightCharge = new BigDecimal(zmService.getMinTicketChargeWeight());
 			}
 
 			if (weightCharge.compareTo(new BigDecimal(weightB))==-1){
