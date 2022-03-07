@@ -64,8 +64,8 @@ public class ZmAirportController extends JeecgController<ZmAirport, IZmAirportSe
 	@GetMapping(value = "/list")
 	public Result<?> queryPageList(ZmAirport zmAirport,
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
-								   HttpServletRequest req) {
+	 @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+	 HttpServletRequest req) {
 		QueryWrapper<ZmAirport> queryWrapper = QueryGenerator.initQueryWrapper(zmAirport, req.getParameterMap());
 		Page<ZmAirport> page = new Page<ZmAirport>(pageNo, pageSize);
 		IPage<ZmAirport> pageList = zmAirportService.page(page, queryWrapper);

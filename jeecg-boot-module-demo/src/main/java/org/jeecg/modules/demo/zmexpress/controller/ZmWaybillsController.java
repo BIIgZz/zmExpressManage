@@ -174,7 +174,13 @@ public class ZmWaybillsController {
 	@ApiOperation(value = "运单全表-通过id删除", notes = "运单全表-通过id删除")
 	@DeleteMapping(value = "/delete")
 	public Result<?> delete(@RequestParam(name = "id", required = true) String id) {
+		ZmWaybills byId = zmWaybillsService.getById(id);
 		zmWaybillsService.delMain(id);
+		try {
+			zmLogisticsInformationService.remove(new QueryWrapper<ZmLogisticsInformation>().eq("order_id",byId.getOrderId()));
+		}catch (Exception e){
+
+		}
 		return Result.OK("删除成功!");
 	}
 
@@ -938,36 +944,83 @@ public class ZmWaybillsController {
 	 * @throws
 	 */
 	@GetMapping("/statisticsByStatus")
-	public Result<?> statisticsByStatus() {
+	public Result<?> statisticsByStatus(@RequestParam(name = "type", required = true) int type,
+										@RequestParam(name = "name", required = true) String name) {
 		String[] res  = new String[7];
 		int count = 0;
-		QueryWrapper<ZmWaybills> queryWrapper = new QueryWrapper<>();
-		queryWrapper.eq("status","已下单");
-		count = zmWaybillsService.count(queryWrapper);
-		res[0]="已下单("+count+")";
-		queryWrapper.clear();
-		queryWrapper.eq("status","已收货");
-		count = zmWaybillsService.count(queryWrapper);
-		res[1]="已收货("+count+")";
-		queryWrapper.clear();
-		queryWrapper.eq("status","转运中");
-		count = zmWaybillsService.count(queryWrapper);
-		res[2]="转运中("+count+")";
-		queryWrapper.clear();
-		queryWrapper.eq("status","已签收");
-		count = zmWaybillsService.count(queryWrapper);
-		res[3]="已签收("+count+")";
-		queryWrapper.clear();
-		queryWrapper.eq("status","退件");
-		count = zmWaybillsService.count(queryWrapper);
-		res[4]="退件("+count+")";
-		queryWrapper.clear();
-		queryWrapper.eq("status","已取消");
-		count = zmWaybillsService.count(queryWrapper);
-		res[5]="已取消("+count+")";
-		count = zmWaybillsService.count();
-		res[6]="全部("+count+")";
-		return  Result.OK(res);
+		if (type==1||type==2){
+			QueryWrapper<ZmWaybills> queryWrapper = new QueryWrapper<>();
+			List<ZmWaybills> list = zmWaybillsService.list();
+			int a = 0, b = 0, c = 0, d = 0, e = 0, f = 0;
+			for (ZmWaybills zmWaybills : list) {
+				switch (zmWaybills.getStatus()) {
+					case "已下单":
+						a++;
+						break;
+					case "已收货":
+						b++;
+						break;
+					case "转运中":
+						c++;
+						break;
+					case "已签收":
+						d++;
+						break;
+					case "退件":
+						e++;
+						break;
+					case "已取消":
+						f++;
+						break;
+				}
+			}
+			res[0] = "已下单(" + a + ")";
+			res[1] = "已收货(" + b + ")";
+			res[2] = "转运中(" + c + ")";
+			res[3] = "已签收(" + d + ")";
+			res[4] = "退件(" + e + ")";
+			res[5] = "已取消(" + f + ")";
+			res[6] = "全部(" + list.size() + ")";
+			return  Result.OK(res);
+		}else {
+			QueryWrapper<ZmWaybills> queryWrapper = new QueryWrapper<>();
+			queryWrapper.eq("username", name);
+			List<ZmWaybills> list = zmWaybillsService.list(queryWrapper);
+			int a = 0, b = 0, c = 0, d = 0, e = 0, f = 0;
+			for (ZmWaybills zmWaybills : list) {
+				switch (zmWaybills.getStatus()) {
+					case "已下单":
+						a++;
+						break;
+					case "已收货":
+						b++;
+						break;
+					case "转运中":
+						c++;
+						break;
+					case "已签收":
+						d++;
+						break;
+					case "退件":
+						e++;
+						break;
+					case "已取消":
+						f++;
+						break;
+				}
+			}
+
+			res[0] = "已下单(" + a + ")";
+			res[1] = "已收货(" + b + ")";
+			res[2] = "转运中(" + c + ")";
+			res[3] = "已签收(" + d + ")";
+			res[4] = "退件(" + e + ")";
+			res[5] = "已取消(" + f + ")";
+			res[6] = "全部(" + list.size() + ")";
+			return  Result.OK(res);
+		}
+
+
 	}
 
 
@@ -1137,7 +1190,7 @@ public class ZmWaybillsController {
 			zmWaybillsService.saveMain(po, zmGoodCases);
 			QueryWrapper<ZmWaybills> queryWrapper = new QueryWrapper<>();
 			ZmLogisticsInformation zmLogisticsInformation = new ZmLogisticsInformation();
-			zmLogisticsInformation.setOrderId(po.getOrderId());
+			zmLogisticsInformation.setOrderId(po.getId());
 			String msg = "已下单-" + TimeUtils.getNowTime();
 			zmLogisticsInformation.setMsg(msg);
 			zmLogisticsInformationService.save(zmLogisticsInformation);

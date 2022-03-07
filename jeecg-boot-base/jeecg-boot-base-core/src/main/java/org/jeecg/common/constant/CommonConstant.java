@@ -220,10 +220,16 @@ public interface CommonConstant {
     public static final Integer UPLOAD_EFFECTIVE_DAYS = 1;
 
     /**
-     * 员工身份 （1:普通员工  2:上级）
+     * 员工身份 （1:普通员工  2:上级 0:未认证用户 3:认证未通过用户 4：已认证用户 ）
      */
+    public static final Integer USER_IDENTITY_0 = 0;
     public static final Integer USER_IDENTITY_1 = 1;
     public static final Integer USER_IDENTITY_2 = 2;
+    public static final Integer USER_IDENTITY_3 = 3;
+    public static final Integer USER_IDENTITY_4 = 4;
+
+
+
 
     /** sys_user 表 username 唯一键索引 */
     public static final String SQL_INDEX_UNIQ_SYS_USER_USERNAME = "uniq_sys_user_username";

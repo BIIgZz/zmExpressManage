@@ -2,6 +2,8 @@ server:
   port: 8080
   tomcat:
     max-swallow-size: -1
+    uri-encoding: UTF-8
+    max-http-header-size: 8096
   error:
     include-exception: true
     include-stacktrace: ALWAYS
@@ -242,6 +244,7 @@ jeecg :
     logPath: logs/jeecg/job/jobhandler/
     logRetentionDays: 30
   route:
+
     config:
       data-id: jeecg-gateway-router
       group: DEFAULT_GROUP

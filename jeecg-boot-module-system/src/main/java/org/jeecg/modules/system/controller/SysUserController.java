@@ -266,10 +266,10 @@ public class SysUserController {
     public Result<?> pass(@RequestBody ZmUserDetail zmUserDetail) {
         Result<SysUser> result = new Result<SysUser>();
         SysUser user = sysUserService.getOne(new QueryWrapper<SysUser>().eq("client_id", zmUserDetail.getUserId()));
-        user.setUserIdentity(1);
-        zmUserDetail.setStatus("1");
+        user.setUserIdentity(4);
+        zmUserDetail.setStatus("4");
         ZmClientMain zmClientMain = zmClientMainService.getOne(new QueryWrapper<ZmClientMain>().eq("code",zmUserDetail.getUserId()));
-        zmClientMain.setStatus("1");
+        zmClientMain.setStatus("4");
         try {
             zmClientMainService.updateById(zmClientMain);
             sysUserService.updateById(user);
@@ -292,10 +292,10 @@ public class SysUserController {
     public Result<?> passOut(@RequestBody ZmUserDetail zmUserDetail) {
         Result<SysUser> result = new Result<SysUser>();
         SysUser user = sysUserService.getOne(new QueryWrapper<SysUser>().eq("client_id", zmUserDetail.getUserId()));
-        user.setUserIdentity(0);
-        zmUserDetail.setStatus("0");
+        user.setUserIdentity(3);
+        zmUserDetail.setStatus("3");
         ZmClientMain zmClientMain = zmClientMainService.getOne(new QueryWrapper<ZmClientMain>().eq("code",zmUserDetail.getUserId()));
-        zmClientMain.setStatus("0");
+        zmClientMain.setStatus("3");
         try {
             zmClientMainService.updateById(zmClientMain);
             sysUserService.updateById(user);
@@ -664,7 +664,6 @@ public class SysUserController {
                 if(one==null){
                     sysUserRoleService.save(sysUserRole);
                 }
-
             }
             result.setMessage("添加成功!");
             result.setSuccess(true);
@@ -1007,6 +1006,7 @@ public class SysUserController {
 			user.setPassword(passwordEncode);
 			user.setEmail(email);
 			user.setPhone(phone);
+            user.setUserIdentity(CommonConstant.USER_IDENTITY_0);
 			user.setStatus(CommonConstant.USER_UNFREEZE);
 			user.setDelFlag(CommonConstant.DEL_FLAG_0);
 			user.setActivitiSync(CommonConstant.ACT_SYNC_0);

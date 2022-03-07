@@ -2,6 +2,8 @@ server:
   port: 8080
   tomcat:
     max-swallow-size: -1
+    uri-encoding: UTF-8
+    max-http-header-size: 8096
   error:
     include-exception: true
     include-stacktrace: ALWAYS
@@ -131,7 +133,7 @@ spring:
         connectionProperties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
       datasource:
         master:
-          url: jdbc:mysql://127.0.0.1:3306/jeecg-boot?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+          url: jdbc:mysql://119.91.221.104:3306/jeecg-boot?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
           username: root
           password: root
           driver-class-name: com.mysql.cj.jdbc.Driver
@@ -233,15 +235,16 @@ jeecg :
   #xxl-job配置
   xxljob:
     enabled: false
-    adminAddresses: http://127.0.0.1:9080/xxl-job-admin
+    adminAddresses: http://119.91.221.104:9080/xxl-job-admin
     appname: ${spring.application.name}
     accessToken: ''
-    address: 127.0.0.1:30007
-    ip: 127.0.0.1
+    address: 119.91.221.104:30007
+    ip: 119.91.221.104
     port: 30007
     logPath: logs/jeecg/job/jobhandler/
     logRetentionDays: 30
   route:
+
     config:
       data-id: jeecg-gateway-router
       group: DEFAULT_GROUP
@@ -249,7 +252,7 @@ jeecg :
       data-type: database
   #分布式锁配置
   redisson:
-    address: 127.0.0.1:6379
+    address: 119.91.221.104:6379
     password:
     type: STANDALONE
     enabled: true
