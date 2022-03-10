@@ -590,29 +590,62 @@ public class ZmClientMainController extends JeecgController<ZmClientMain, IZmCli
 	 public Result<?> statisticsByStatus() {
 		 String[] res  = new String[6];
 		 int count = 0;
-		 QueryWrapper<ZmClientMain> queryWrapper = new QueryWrapper<>();
-		 queryWrapper.eq("status","0");
-		 count = zmClientMainService.count(queryWrapper);
-		 res[0]="待审核("+count+")";
-		 queryWrapper.clear();
-		 queryWrapper.eq("status","1");
-		 count = zmClientMainService.count(queryWrapper);
-		 res[1]="已认证("+count+")";
-		 queryWrapper.clear();
-		 queryWrapper.eq("status","2");
-		 count = zmClientMainService.count(queryWrapper);
-		 res[2]="免认证("+count+")";
-		 queryWrapper.clear();
-		 queryWrapper.eq("status","3");
-		 count = zmClientMainService.count(queryWrapper);
-		 res[3]="待提交认证("+count+")";
-		 queryWrapper.clear();
-		 queryWrapper.eq("status","4");
-		 count = zmClientMainService.count(queryWrapper);
-		 res[4]="已拒绝("+count+")";
-		 queryWrapper.clear();
-		 count = zmClientMainService.count();
-		 res[5]="全部("+count+")";
+		 List<ZmClientMain> list = zmClientMainService.list();
+		 int a = 0, b = 0, c = 0, d = 0, e = 0;
+		 for (ZmClientMain zmClientMain : list) {
+			 switch (zmClientMain.getStatus()){
+				 case "0":
+					 a++;
+					 break;
+				 case "1":
+					 b++;
+					 break;
+				 case "2":
+					 c++;
+					 break;
+				 case "3":
+					 d++;
+					 break;
+				 case "4":
+					 e++;
+					 break;
+			 }
+		 }
+		 res[0] = "待提交认证("+a+")";
+		 res[1] = "待审核("+b+")";
+		 res[2] = "免认证("+c+")";
+		 res[3] = "已拒绝("+d+")";
+		 res[4] = "已认证("+e+")";
+		 res[5] = "全部("+list.size()+")";
+
+
+//
+//		 QueryWrapper<ZmClientMain> queryWrapper = new QueryWrapper<>();
+//		 queryWrapper.eq("status","0");
+//		 count = zmClientMainService.count(queryWrapper);
+//		 res[0]="待审核("+count+")";
+//		 queryWrapper.clear();
+//		 queryWrapper.eq("status","1");
+//		 count = zmClientMainService.count(queryWrapper);
+//		 res[1]="已认证("+count+")";
+//		 queryWrapper.clear();
+//		 queryWrapper.eq("status","2");
+//		 count = zmClientMainService.count(queryWrapper);
+//		 res[2]="免认证("+count+")";
+//		 queryWrapper.clear();
+//		 queryWrapper.eq("status","3");
+//		 count = zmClientMainService.count(queryWrapper);
+//		 res[3]="待提交认证("+count+")";
+//		 queryWrapper.clear();
+//		 queryWrapper.eq("status","4");
+//		 count = zmClientMainService.count(queryWrapper);
+//		 res[4]="已拒绝("+count+")";
+//		 queryWrapper.clear();
+//		 count = zmClientMainService.count();
+//		 res[5]="全部("+count+")";
 		 return  Result.OK(res);
+
+
+
 	 }
 }

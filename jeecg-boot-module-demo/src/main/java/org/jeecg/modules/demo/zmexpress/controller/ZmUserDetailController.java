@@ -86,10 +86,13 @@ public class ZmUserDetailController extends JeecgController<ZmUserDetail, IZmUse
 	@ApiOperation(value="用户认证资料-添加", notes="用户认证资料-添加")
 	@PostMapping(value = "/add")
 	public Result<?> add(@RequestBody ZmUserDetail zmUserDetail) {
-		zmUserDetail.setState("0");
+		zmUserDetail.setStatus("1");
+		ZmClientMain clientMain = zmClientMainService.getOne(new QueryWrapper<ZmClientMain>().eq("code", zmUserDetail.getUserId()));
+		clientMain.setStatus("1");
+		zmClientMainService.updateById(clientMain);
 		zmUserDetailService.save(zmUserDetail);
 
-		return Result.OK("添加成功！");
+		return Result.OK("认证信息提交成功！");
 	}
 	
 	/**
@@ -103,7 +106,7 @@ public class ZmUserDetailController extends JeecgController<ZmUserDetail, IZmUse
 	@PutMapping(value = "/edit")
 	public Result<?> edit(@RequestBody ZmUserDetail zmUserDetail) {
 		zmUserDetailService.updateById(zmUserDetail);
-		return Result.OK("编辑成功!");
+		return Result.OK("修改成功!");
 	}
 	
 	/**

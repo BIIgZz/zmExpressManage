@@ -76,67 +76,67 @@ public class ZmWaybillsController {
 	@Autowired
 	private ShopOrderRule shopOrderRule;
 	@Autowired
-	private IZmDeliveryOrderService zmDeliveryOrderService;
-	@Autowired
-	private IZmBillloadingService zmBillloadingService;
-	@Autowired
-	private IZmServiceService zmServiceService;
-	@Autowired
-	private IZmFilePathService zmFilePathService;
-	@Autowired
-	private BaseCommonService baseCommonService;
+		private IZmDeliveryOrderService zmDeliveryOrderService;
+		@Autowired
+		private IZmBillloadingService zmBillloadingService;
+		@Autowired
+		private IZmServiceService zmServiceService;
+		@Autowired
+		private IZmFilePathService zmFilePathService;
+		@Autowired
+		private BaseCommonService baseCommonService;
 
-	@Value(value = "${jeecg.path.upload}")
-	private String uploadpath;
-	/**
-	 * 分页列表查询
-	 *
-	 * @param zmWaybills
-	 * @param pageNo
-	 * @param pageSize
-	 * @param req
-	 * @return
-	 */
-	@AutoLog(value = "运单全表-分页列表查询")
-	@ApiOperation(value = "运单全表-分页列表查询", notes = "运单全表-分页列表查询")
-	@GetMapping(value = "/list")
-	@PermissionData(pageComponent="zm/waybills/ZmWaybillsList")
-	public Result<?> queryPageList(ZmWaybills zmWaybills,
-								   @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-								   @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-								   HttpServletRequest req) {
-		QueryWrapper<ZmWaybills> queryWrapper = QueryGenerator.initQueryWrapper(zmWaybills, req.getParameterMap());
-		Page<ZmWaybills> page = new Page<ZmWaybills>(pageNo, pageSize);
-		IPage<ZmWaybills> pageList = zmWaybillsService.page(page, queryWrapper);
-		return Result.OK(pageList);
-	}
-
-	/**
-	 * 添加
-	 *
-	 * @param zmWaybillsPage
-	 * @return
-	 */
-	@AutoLog(value = "运单全表-添加")
-	@ApiOperation(value = "运单全表-添加", notes = "运单全表-添加")
-	@PostMapping(value = "/add")
-	public Result<?> add(@RequestBody ZmWaybillsPage zmWaybillsPage) {
-		ZmWaybills zmWaybills = new ZmWaybills();
-		BeanUtils.copyProperties(zmWaybillsPage, zmWaybills);
-		double totalWeight = 0;
-		double totalVolume = 0;
-		int caseNum = zmWaybillsPage.getZmGoodCaseList().size();
-		double volumeWeight = 0;
-		double chargeWeight = 0;
-		for (ZmGoodCase zmGoodCase : zmWaybillsPage.getZmGoodCaseList()) {
-
-			totalWeight += zmGoodCase.getWeight();
-			totalVolume += zmGoodCase.getLength()*zmGoodCase.getHeight()*zmGoodCase.getWidth()/1000;
-
+		@Value(value = "${jeecg.path.upload}")
+		private String uploadpath;
+		/**
+		 * 分页列表查询
+		 *
+		 * @param zmWaybills
+		 * @param pageNo
+		 * @param pageSize
+		 * @param req
+		 * @return
+		 */
+		@AutoLog(value = "运单全表-分页列表查询")
+		@ApiOperation(value = "运单全表-分页列表查询", notes = "运单全表-分页列表查询")
+		@GetMapping(value = "/list")
+		@PermissionData(pageComponent="zm/waybills/ZmWaybillsList")
+		public Result<?> queryPageList(ZmWaybills zmWaybills,
+				@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+				@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+				HttpServletRequest req) {
+			QueryWrapper<ZmWaybills> queryWrapper = QueryGenerator.initQueryWrapper(zmWaybills, req.getParameterMap());
+			Page<ZmWaybills> page = new Page<ZmWaybills>(pageNo, pageSize);
+			IPage<ZmWaybills> pageList = zmWaybillsService.page(page, queryWrapper);
+			return Result.OK(pageList);
 		}
-		DecimalFormat df = new DecimalFormat("0.00");
-		volumeWeight = Double.parseDouble(df.format(totalVolume/Double.parseDouble(zmWaybillsPage.getFoamingFactor())));
-		zmWaybills.setWeightActual(totalWeight);
+
+		/**
+		 * 添加
+		 *
+		 * @param zmWaybillsPage
+		 * @return
+		 */
+		@AutoLog(value = "运单全表-添加")
+		@ApiOperation(value = "运单全表-添加", notes = "运单全表-添加")
+		@PostMapping(value = "/add")
+		public Result<?> add(@RequestBody ZmWaybillsPage zmWaybillsPage) {
+			ZmWaybills zmWaybills = new ZmWaybills();
+			BeanUtils.copyProperties(zmWaybillsPage, zmWaybills);
+			double totalWeight = 0;
+			double totalVolume = 0;
+			int caseNum = zmWaybillsPage.getZmGoodCaseList().size();
+			double volumeWeight = 0;
+			double chargeWeight = 0;
+			for (ZmGoodCase zmGoodCase : zmWaybillsPage.getZmGoodCaseList()) {
+
+				totalWeight += zmGoodCase.getWeight();
+				totalVolume += zmGoodCase.getLength()*zmGoodCase.getHeight()*zmGoodCase.getWidth()/1000;
+
+			}
+			DecimalFormat df = new DecimalFormat("0.00");
+			volumeWeight = Double.parseDouble(df.format(totalVolume/Double.parseDouble(zmWaybillsPage.getFoamingFactor())));
+			zmWaybills.setWeightActual(totalWeight);
 		zmWaybills.setVolume(totalVolume);
 		zmWaybills.setWeightVolume(volumeWeight+"");
 		zmWaybillsService.saveMain(zmWaybills, zmWaybillsPage.getZmGoodCaseList());
@@ -1296,6 +1296,43 @@ public class ZmWaybillsController {
 			return Result.error("未找到对应数据");
 		}
 		return Result.OK(zmWaybills);
+	}
+
+	/**
+	 * @title 统计用户订单
+	 * @description 按类型分别统计用户订单数量
+	 * @author zzh
+	 * @updateTime 2022/3/9 16:53
+	 * @throws
+	 */
+	@GetMapping(value = "/getSortNum")
+	public Result<?> getSortNum(@RequestParam(name = "name", required = true) String name) {
+		List<ZmWaybills> list = zmWaybillsService.list(new QueryWrapper<ZmWaybills>().eq("username", name));
+		Map<String ,Integer> res = new HashMap<>();
+		res.put("ordered",0);res.put("received",0);res.put("transit",0);res.put("sign",0);res.put("return",0);res.put("cancel",0);
+		for (ZmWaybills zmWaybills : list) {
+			switch (zmWaybills.getStatus()){
+				case "已下单":
+					res.put("ordered",res.get("ordered")+1);
+					break;
+				case "已收货":
+					res.put("received",res.get("received")+1);
+					break;
+				case "转运中":
+					res.put("transit",res.get("transit")+1);
+					break;
+				case "已签收":
+					res.put("sign",res.get("sign")+1);
+					break;
+				case "退件":
+					res.put("return",res.get("return")+1);
+					break;
+				case "取消":
+					res.put("cancel",res.get("cancel")+1);
+					break;
+			}
+		}
+		return Result.OK(res);
 	}
 
 }
