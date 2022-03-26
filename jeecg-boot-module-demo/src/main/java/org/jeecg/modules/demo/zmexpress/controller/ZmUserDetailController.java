@@ -203,7 +203,7 @@ public class ZmUserDetailController extends JeecgController<ZmUserDetail, IZmUse
 	 @AutoLog(value = "用户认证资料-通过用户code")
 	 @ApiOperation(value="用户认证资料-通过用户code", notes="用户认证资料-通过用户code")
 	 @GetMapping(value = "/queryByUserCode")
-	 public Result<?> queryByUserCode(@RequestParam(name="userCode",required=true) String userCode) {
+	 public Result<?> queryByUserCode(@RequestParam(name="userCode",required=true,defaultValue = "0") String userCode) {
 
 		 ZmUserDetail zmUserDetail = zmUserDetailService.getOne(new QueryWrapper<ZmUserDetail>().eq("user_id",userCode));
 		 if(zmUserDetail==null) {

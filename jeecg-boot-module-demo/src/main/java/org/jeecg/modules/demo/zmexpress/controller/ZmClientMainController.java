@@ -628,7 +628,7 @@ public class ZmClientMainController extends JeecgController<ZmClientMain, IZmCli
 //		 queryWrapper.eq("status","1");
 //		 count = zmClientMainService.count(queryWrapper);
 //		 res[1]="已认证("+count+")";
-//		 queryWrapper.clear();
+//		 queryWrapper.clear();userCode
 //		 queryWrapper.eq("status","2");
 //		 count = zmClientMainService.count(queryWrapper);
 //		 res[2]="免认证("+count+")";

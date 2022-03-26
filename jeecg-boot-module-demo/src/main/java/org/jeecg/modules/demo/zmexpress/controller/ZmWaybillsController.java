@@ -40,6 +40,7 @@ import org.jeecg.common.util.oConvertUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -85,7 +86,6 @@ public class ZmWaybillsController {
 		private IZmFilePathService zmFilePathService;
 		@Autowired
 		private BaseCommonService baseCommonService;
-
 		@Value(value = "${jeecg.path.upload}")
 		private String uploadpath;
 		/**
@@ -101,6 +101,7 @@ public class ZmWaybillsController {
 		@ApiOperation(value = "运单全表-分页列表查询", notes = "运单全表-分页列表查询")
 		@GetMapping(value = "/list")
 		@PermissionData(pageComponent="zm/waybills/ZmWaybillsList")
+		@Cacheable(cacheNames="queryPageList")
 		public Result<?> queryPageList(ZmWaybills zmWaybills,
 				@RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
 				@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
@@ -128,16 +129,17 @@ public class ZmWaybillsController {
 			int caseNum = zmWaybillsPage.getZmGoodCaseList().size();
 			double volumeWeight = 0;
 			double chargeWeight = 0;
-			for (ZmGoodCase zmGoodCase : zmWaybillsPage.getZmGoodCaseList()) {
-
-				totalWeight += zmGoodCase.getWeight();
-				totalVolume += zmGoodCase.getLength()*zmGoodCase.getHeight()*zmGoodCase.getWidth()/1000;
-
-			}
-			DecimalFormat df = new DecimalFormat("0.00");
-			volumeWeight = Double.parseDouble(df.format(totalVolume/Double.parseDouble(zmWaybillsPage.getFoamingFactor())));
-			zmWaybills.setWeightActual(totalWeight);
-		zmWaybills.setVolume(totalVolume);
+			zmWaybills.setStatus("已下单");
+//			for (ZmGoodCase zmGoodCase : zmWaybillsPage.getZmGoodCaseList()) {
+//
+//				totalWeight += zmGoodCase.getWeight();
+//				totalVolume += zmGoodCase.getLength()*zmGoodCase.getHeight()*zmGoodCase.getWidth()/1000;
+//
+//			}
+//			DecimalFormat df = new DecimalFormat("0.00");
+//			volumeWeight = Double.parseDouble(df.format(totalVolume/Double.parseDouble(zmWaybillsPage.getFoamingFactor())));
+//			zmWaybills.setWeightActual(totalWeight);
+//		zmWaybills.setVolume(totalVolume);
 		zmWaybills.setWeightVolume(volumeWeight+"");
 		zmWaybillsService.saveMain(zmWaybills, zmWaybillsPage.getZmGoodCaseList());
 		return Result.OK("添加成功！");
@@ -509,8 +511,9 @@ public class ZmWaybillsController {
 				return Result.OK("文件导入成功！");
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);
-				if (e.getMessage().contains("fbaid"))
+				if (e.getMessage().contains("fbaid")) {
 					return Result.error("文件导入失败:fbaid重复");
+				}
 				return Result.error("文件导入失败:" + e.getMessage());
 			} finally {
 				try {

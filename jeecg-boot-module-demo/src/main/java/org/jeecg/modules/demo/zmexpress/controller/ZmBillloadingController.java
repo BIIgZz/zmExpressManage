@@ -97,11 +97,11 @@ public class ZmBillloadingController extends JeecgController<ZmBillloading, IZmB
 	@ApiOperation(value="提单表-添加", notes="提单表-添加")
 	@PostMapping(value = "/add")
 	public Result<?> add(@RequestBody ZmBillloading zmBillloading) {
-		zmBillloading.setStatus("待订仓");
+		zmBillloading.setStatus("待定仓");
 		zmBillloadingService.save(zmBillloading);
-		QueryWrapper<ZmBillloading> queryWrapper = new QueryWrapper<>();
-		queryWrapper.eq("billnum",zmBillloading.getBillnum());
-		zmBillloadingService.getOne(queryWrapper);
+//		QueryWrapper<ZmBillloading> queryWrapper = new QueryWrapper<>();
+//		queryWrapper.eq("billnum",zmBillloading.getBillnum());
+//		zmBillloadingService.getOne(queryWrapper);
 		ZmLogisticsInformation zmLogisticsInformation = new ZmLogisticsInformation();
 		zmLogisticsInformation.setOrderId(zmBillloading.getId());
 		zmLogisticsInformation.setMsg("提单已创建");
